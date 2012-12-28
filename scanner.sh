@@ -24,30 +24,4 @@ clamscan -ri /home/* >> /tmp/$1
 
 cp /tmp/$1 . 
 
-#for x in `$1 | egrep -v "^$" | cut -d\/ -f7 | sort -u`; do cat $1 | grep $x > /home/$x/arquivos-maliciosos.txt |chown $x: /home/$x/arquivos-maliciosos.txt
-#31::q!done
-
-
-
-
-
-
-
-
-
-# ($date +%Y%m%d-%H%M) Pode ser usado para criar a saida de um arquivo
-
-
-
-
-
-
-
-#while 
-#ps aux|grep clamscan > /dev/null
-#do 
-#sleep 30
-#echo $!
-#jobs
-#done
-#Echo "fim do clamscan verifique o scan.txt"
+exit 0

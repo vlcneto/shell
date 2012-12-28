@@ -31,13 +31,4 @@ for w in `cat $1|awk -F: '{printf $1 "\n"}'`;do
 chmod 700 $w | echo "$w"| xargs ls -lhap
 done
 
-exit0
-
-
-#echo "$result"
-
-#sed '/^$/d' > dor.txt
-
-#cat $1 |awk -F: '{print $1}' $1 | xargs chmod 000;awk -F: '{print $1}' $1 | xargs ls -lhap; echo " "
-
-#for x in '$1 | egrep -v "^$" | cut -d\/ -f7 | sort -u'; do cat $1 | grep $x > /home/$x/arquivos-maliciosos.txt |chown $x: /home/$x/arquivos-maliciosos.txt; done#for x in `$LISTA; awk -F: '{print $1}' $LISTA`; do ls -lhap /home/$x/ |grep arquivos-maliciosos.txt > contralista.txt; done
+exit 0
