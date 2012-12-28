@@ -31,4 +31,11 @@ for w in `cat $1|awk -F: '{printf $1 "\n"}'`;do
 chmod 700 $w | echo "$w"| xargs ls -lhap
 done
 
+list=$(cat $LISTA| awk -F: '{printf $1 "\n"}')
+echo "$list"
+
+for x in $list; do
+/sbin/locadmin/hospedagem/admin_statusweb $x > saidaresult; cat saidaresult |grep 'deact'
+done
+
 exit 0
