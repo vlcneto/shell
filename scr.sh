@@ -14,7 +14,7 @@ echo "informe o nome da lista"
 
 read LISTA
 
-cat $1 | egrep -v "^$" | cut -d\/ -f7 | sort -u > $LISTA
+cat $1 | egrep -v "^$" | cut -d\/ -f7 | sed '/^$/d' |sort -u > $LISTA
 
 
 for x in `cat $1 | egrep -v "^$" | cut -d\/ -f7 | sort -u`; do
@@ -32,10 +32,17 @@ chmod 700 $w | echo "$w"| xargs ls -lhap
 done
 
 list=$(cat $LISTA| awk -F: '{printf $1 "\n"}')
-echo "$list"
+echo
 
-for x in $list; do
-/sbin/locadmin/hospedagem/admin_statusweb $x > saidaresult; cat saidaresult |grep 'deact'
+
+for z in $list; do
+/sbin/locadmin/hospedagem/admin_statusweb $z >> saidaresultado
 done
 
+#logindesativados=$(cat saidaresultado| awk -F: '{print $2 $3 "\n"}')
+
+#cat saidaresultado
+
+date +"%d-%m-%Y-%T"; echo >> testefrozen;
+for x in `cat arquivocomlogins`; do echo $x; echo >> testefrozen; done
 exit 0
