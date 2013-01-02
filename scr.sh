@@ -32,17 +32,17 @@ chmod 700 $w | echo "$w"| xargs ls -lhap
 done
 
 list=$(cat $LISTA| awk -F: '{printf $1 "\n"}')
-echo
+#echo
 
-
+(date "+%d-%m-%Y-%T"; echo) >> saidaresultado
 for z in $list; do
 /sbin/locadmin/hospedagem/admin_statusweb $z >> saidaresultado
 done
+echo >> saidaresultado
+echo >> saidaresultado
 
-#logindesativados=$(cat saidaresultado| awk -F: '{print $2 $3 "\n"}')
+#read DESATIVADOS
 
-#cat saidaresultado
-
-date +"%d-%m-%Y-%T"; echo >> testefrozen;
-for x in `cat arquivocomlogins`; do echo $x; echo >> testefrozen; done
-exit 0
+#for b in `awk -F '{printf $1, $2, $3 "\n"}'|grep "desac" saidaresultado`; do
+#echo $b
+#done
