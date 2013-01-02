@@ -36,10 +36,10 @@ list=$(cat $LISTA| awk -F: '{printf $1 "\n"}')
 
 (date "+%d-%m-%Y-%T"; echo) >> saidaresultado
 for z in $list; do
-/sbin/locadmin/hospedagem/admin_statusweb $z >> saidaresultado
+/sbin/locadmin/hospedagem/admin_statusweb $z >> saidaresultado$(date "+%d-%m-%Y-%T")
 done
-echo >> saidaresultado
-echo >> saidaresultado
+#echo >> saidaresultado
+#echo >> saidaresultado
 
 #read DESATIVADOS
 
