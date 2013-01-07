@@ -1,10 +1,9 @@
-scanner.sh
-
 #!/bin/sh
 
 #script para rodar clamscan v.0.1
 
 file=$1
+move=$(pwd)
 
 if [[ -f log_scan.txt ]]
 then
@@ -22,6 +21,6 @@ fi
 renice 19 -p $$ > /dev/null
 clamscan -ri /home/* >> /tmp/$1
 
-cp /tmp/$1 . 
+cp /tmp/$1 $move 
 
 exit 0
