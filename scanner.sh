@@ -19,8 +19,7 @@ exit 0
 fi
 
 renice 19 -p $$ > /dev/null
-clamscan -ri /home/* >> /tmp/$1
+clamscan -ri /home/* >> $move/$1
 
-cp /tmp/$1 $move 
 
 exit 0
