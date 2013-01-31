@@ -12,8 +12,3 @@ done
 
 if grep -w "FOUND" datafile; then
     echo " " |mail -s "$HOSTNAME possui arquivos infectados" victor.neto@locaweb.com.br
-else
-    echo "not found"
-fi
-
-exit 0
