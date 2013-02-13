@@ -4,9 +4,9 @@
 
 exec 2>> log.txt
 
-if [ "$#" -ne 1 ]
+if [ "$#" -ne 2 ]
 then
-echo " Use $0 arquivo com o scan"
+echo " Use $0 arquivo com o scan e nome da lista"
 exit 0
 fi
 
@@ -24,9 +24,9 @@ for x in `cat prim_lis |awk -F: '{printf $1 "\n"}'`; do
 cat /etc/passwd|cut -d: -f 1 |awk '!/webserver|webserver-logs|locaweb-sudo/'| grep -w $x| sort -u >> origfile
 done
 
-echo -n > lista_login
+#echo -n > lista_login
 #Provisorio para remover os logins "_internos"
-cat origfile |grep -v '^\_'|sort -u > lista_login
+cat origfile |grep -v '^\_'|sort -u > $2
 
 #verifica o status das hospedagens
 
@@ -40,13 +40,13 @@ echo >> saidaresultado
 
 #compara saida e cria 2 arquivos (ativos e desativados)
 
-listinha=$(cat lista_login| wc -l)
+listinha=$(cat $2| wc -l)
 
 if [ -e saidaresultado ]; then
     cat saidaresultado |grep "desactivated"| cut -d ' ' -f 2 > desativados
 fi
-cat lista_login > prim_lis3
-awk 'FNR==NR{a[$1]++;next}!a[$1]' desativados prim_lis3 >> lista_login
+cat $2 > prim_lis3
+awk 'FNR==NR{a[$1]++;next}!a[$1]' desativados prim_lis3 >> $2
 
 #remove os desativados da lista de login
 
@@ -65,7 +65,7 @@ for w in `cat $1|awk -F: '{printf $1 "\n"}'`;do
 chmod 700 $w | echo "$w"| xargs ls -lhap
 done
 
-for x in `cat lista_login |awk -F: '{printf $1 "\n"}'`; do ls -lha /home/$x/|grep "arquivos-suspeitos.txt" >> result_file; done
+for x in `cat $2 |awk -F: '{printf $1 "\n"}'`; do ls -lha /home/$x/|grep "arquivos-suspeitos.txt" >> result_file; done
 
 
 echo " "
@@ -73,7 +73,7 @@ echo " "
 echo "Numero total de clientes gerados pelo scan FULL->" $(cat origfile|wc -l)
 echo "NUmero total depois dos duplicados e afins->" $listinha
 echo "Numero total de clientes desativados->" $(cat desativados|wc -l)
-echo "Numero de clientes->" $(cat lista_login|wc -l)
+echo "Numero de clientes->" $(cat $2|wc -l)
 echo "Numero de arquivos-suspeitos.txt encontrados->" $(cat result_file|wc -l)
 
 
