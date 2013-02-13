@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#versao 0.2 cria lista de login/file/remove permission (corrigido grep)
+#versao 0.2 cria lista de logitouchn/file/remove permission (corrigido grep)
 
 exec 2>> log.txt
 
@@ -17,11 +17,14 @@ cat $1 | egrep -v "^$" | cut -d\/ -f7 | sed '/^$/d' |sort -u > prim_lis
 
 #remove os usuarios do sistema e compara com o passwd e gera uma segunda lista
 
+echo -n > result_file
+
 echo -n > origfile
 for x in `cat prim_lis |awk -F: '{printf $1 "\n"}'`; do
 cat /etc/passwd|cut -d: -f 1 |awk '!/webserver|webserver-logs|locaweb-sudo/'| grep -w $x| sort -u >> origfile
 done
 
+echo -n > lista_login
 #Provisorio para remover os logins "_internos"
 cat origfile |grep -v '^\_'|sort -u > lista_login
 
@@ -43,7 +46,7 @@ if [ -e saidaresultado ]; then
     cat saidaresultado |grep "desactivated"| cut -d ' ' -f 2 > desativados
 fi
 cat lista_login > prim_lis3
-awk 'FNR==NR{a[$1]++;next}!a[$1]' desativados prim_lis3 > lista_login
+awk 'FNR==NR{a[$1]++;next}!a[$1]' desativados prim_lis3 >> lista_login
 
 #remove os desativados da lista de login
 
@@ -62,13 +65,16 @@ for w in `cat $1|awk -F: '{printf $1 "\n"}'`;do
 chmod 700 $w | echo "$w"| xargs ls -lhap
 done
 
+for x in `cat lista_login |awk -F: '{printf $1 "\n"}'`; do ls -lha /home/$x/|grep "arquivos-suspeitos.txt" >> result_file; done
+
+
 echo " "
 echo " "
 echo "Numero total de clientes gerados pelo scan FULL->" $(cat origfile|wc -l)
 echo "NUmero total depois dos duplicados e afins->" $listinha
 echo "Numero total de clientes desativados->" $(cat desativados|wc -l)
 echo "Numero de clientes->" $(cat lista_login|wc -l)
-
+echo "Numero de arquivos-suspeitos.txt encontrados->" $(cat result_file|wc -l)
 
 
 rm prim_lis
